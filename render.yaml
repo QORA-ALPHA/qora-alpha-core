@@ -1,0 +1,8 @@
+services:
+  - type: worker
+    name: qora-alpha-core
+    env: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    autoDeploy: true
