@@ -1,7 +1,7 @@
 import os
 import asyncio
 from loguru import logger
-from src.bots.telegram_bot import build_app, schedule_jobs
+from telegram_bot import build_app, schedule_jobs
 
 TZ = os.getenv("TZ", "UTC")
 
@@ -16,3 +16,4 @@ if __name__ == "__main__":
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
         pass
+Fix import path for Render deployment
