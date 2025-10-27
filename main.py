@@ -4,18 +4,17 @@ import os
 import asyncio
 from loguru import logger
 
-# Importamos desde la raíz (porque telegram_bot.py está en la raíz del repo)
-from telegram_bot import build_app, schedule_jobs
+from telegram_bot import build_app, schedule_jobs  # importa desde la raíz
 
 TZ = os.getenv("TZ", "UTC")
 
 async def run():
-    app = await build_app()          # crea la app de python-telegram-bot
-    schedule_jobs(app)               # programa el job horario (HH:00)
+    app = await build_app()
+    schedule_jobs(app)
     logger.info(f"QORA Alpha Core starting (polling mode) | TZ={TZ}")
     await app.run_polling(allowed_updates=None)
 
-if __name__ == "__main__":
+if name == "__main__":
     try:
         asyncio.run(run())
     except Exception as e:
