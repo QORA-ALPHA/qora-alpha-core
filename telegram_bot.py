@@ -8,7 +8,8 @@ from telegram.ext import Application, CommandHandler, ContextTypes
 from telegram import Update
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
-from report_generator import build_alpha_report  # <-- sin "src."
+# ⬇️ Import sin "src."
+from report_generator import build_alpha_report
 
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 DEFAULT_CHAT_ID = os.getenv("CHAT_ID")
