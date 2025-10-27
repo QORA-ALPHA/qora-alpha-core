@@ -1,10 +1,14 @@
+# telegram_bot.py — QORA Alpha Bot (root imports)
+
 import os
 import asyncio
 from datetime import datetime, timezone
+
 from telegram.ext import Application, CommandHandler, ContextTypes
 from telegram import Update
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from src.core.report_generator import build_alpha_report
+
+from report_generator import build_alpha_report  # <-- sin "src."
 
 TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 DEFAULT_CHAT_ID = os.getenv("CHAT_ID")
@@ -30,8 +34,7 @@ async def cmd_pause(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("⏸️ Alpha mode paused.")
 
 async def cmd_status(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    msg = f"Alpha auto: {ACTIVE['auto']} | Time: {utc_now_str()}"
-    await update.message.reply_text(msg)
+    await update.message.reply_text(f"Alpha auto: {ACTIVE['auto']} | Time: {utc_now_str()}")
 
 async def cmd_alpha_report(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = await build_alpha_report()
@@ -41,13 +44,12 @@ async def push_alpha_report(app: Application):
     if not ACTIVE["auto"]:
         return
     text = await build_alpha_report()
-    chat_id = DEFAULT_CHAT_ID
-    if chat_id:
-        await app.bot.send_message(chat_id=int(chat_id), text=text, disable_web_page_preview=True)
+    if DEFAULT_CHAT_ID:
+        await app.bot.send_message(chat_id=int(DEFAULT_CHAT_ID), text=text, disable_web_page_preview=True)
 
 def schedule_jobs(app: Application):
     scheduler = AsyncIOScheduler(timezone="UTC")
-    scheduler.add_job(lambda: asyncio.create_task(push_alpha_report(app)), "cron", minute="0")  # every hour HH:00
+    scheduler.add_job(lambda: asyncio.create_task(push_alpha_report(app)), "cron", minute="0")
     scheduler.start()
 
 async def build_app() -> Application:
