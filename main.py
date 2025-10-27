@@ -33,5 +33,5 @@ def main():
         logger.exception(f"Fatal error starting QORA Alpha Core: {e}")
         raise
 
-if name == "__main__":  # <-- importante: dos guiones bajos
+if __name__ == "__main__":  # <-- importante: dos guiones bajos
     main()
