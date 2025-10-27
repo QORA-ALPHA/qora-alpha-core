@@ -6,14 +6,14 @@ from telegram_bot import build_app, schedule_jobs
 TZ = os.getenv("TZ", "UTC")
 
 async def main():
+    try:
     app = await build_app()
     schedule_jobs(app)  # hourly jobs
-    logger.info("Starting QORA Alpha Core (polling mode)...")
+    logger.info("QORA Alpha Core Starting (polling mode) | TZ={}", TZ)
     await app.run_polling(allowed_updates=None)
+except Exception as e:
+    logger.exception("Fatal error Starting QORA Alpha Core: {}", e)
+    raise
 
 if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except (KeyboardInterrupt, SystemExit):
-        pass
-Fix import path for Render deployment
+    asyncio.run(main())
