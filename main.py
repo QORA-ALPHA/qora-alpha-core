@@ -15,7 +15,7 @@ async def run():
     logger.info(f"QORA Alpha Core starting (polling mode) | TZ={TZ}")
     await app.run_polling(allowed_updates=None)
 
-if name == "__main__":
+if __name__ == "__main__":
     try:
         asyncio.run(run())
     except Exception as e:
